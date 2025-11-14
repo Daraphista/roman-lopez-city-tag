@@ -31,9 +31,14 @@ export async function performAutomation() {
   const page = await context.newPage();
   
   await page.goto("https://example.com/");
+  
+  await page.waitForTimeout(2000);
+
+  // Example: get page title
+  const title = await page.title();
 
   await browser.close();
   await client.sessions.release(session.id);
 
-  return { done: true };
+  return { done: true, pageTitle: title };
 }
