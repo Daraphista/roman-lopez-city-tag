@@ -6,7 +6,7 @@ app.use(express.json());
 
 app.get("/", (_, res) => res.send("Service is running ✅"));
 
-app.post("/run", async (req, res) => {
+app.get("/run", async (req, res) => {
   try {
     const result = await runAutomation(req.body || {});
     res.status(200).json({ success: true, result });
