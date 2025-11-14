@@ -5,7 +5,7 @@
   "dependencies": {
     "express": "^4.19.0",
     "playwright": "^1.49.0",
-    "steel-sdk": "^1.0.0"
+    "steel-sdk": "^0.14.0"
   },
   "scripts": {
     "start": "node server.js"
