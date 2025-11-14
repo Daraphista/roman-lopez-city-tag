@@ -20,11 +20,11 @@ export async function performAutomation() {
   // Create ONE unified context
   const context = await browser.newContext();
 
-  // 🚀 Load ALL cookies into this context
+  // 🚀 Load ALL cookies into this context, uncomment needed cookies and comment unneeded cookies
   await preloadCookies(context, [
     "FOLLOWUPBOSS_LOGIN_COOKIE",
-    "YLOPO_LOGIN_COOKIE",
-    "ZILLOW_LOGIN_COOKIE"
+    // "YLOPO_LOGIN_COOKIE",
+    // "ZILLOW_LOGIN_COOKIE"
   ]);
 
   // You're logged into all sites instantly
