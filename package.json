@@ -1,0 +1,13 @@
+{
+  "name": "steel-playwright-template",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "express": "^4.19.0",
+    "playwright": "^1.49.0",
+    "steel-sdk": "^1.0.0"
+  },
+  "scripts": {
+    "start": "node server.js"
+  }
+}
