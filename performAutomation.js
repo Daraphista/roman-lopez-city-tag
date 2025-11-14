@@ -35,7 +35,7 @@ export async function performAutomation() {
   const page = await context.newPage();
 
   // Example URL (replace per automation)
-  const url = "https://romanlopez.followupboss.com/";
+  const url = "example.com";
   await page.goto(url);
 
   await page.waitForTimeout(2000);
