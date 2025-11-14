@@ -1,22 +1,24 @@
 import express from "express";
-import { runAutomation } from "./src/automation.js";
+import { performAutomation } from "./performAutomation.js";
 
 const app = express();
-app.use(express.json());
 
-app.get("/", (_, res) => res.send("Service is running ✅"));
+// Optional: basic health endpoint
+app.get("/", (req, res) => {
+  res.send("Automation service is running.");
+});
 
+// Trigger automation
 app.get("/run", async (req, res) => {
   try {
-    const result = await runAutomation(req.body || {});
-    res.status(200).json({ success: true, result });
+    const result = await performAutomation();
+    res.json({ success: true, result });
   } catch (err) {
-    console.error("Automation failed:", err);
     res.status(500).json({ success: false, error: err.message });
   }
 });
 
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () =>
-  console.log(`🚀 Server listening on port ${PORT}`)
-);
+app.listen(PORT, () => {
+  console.log("Server running on port " + PORT);
+});
