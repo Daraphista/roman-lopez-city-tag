@@ -40,8 +40,5 @@ export async function performAutomation() {
   await browser.close();
   await client.sessions.release(session.id);
 
-  // Edit final console log to make sure that automation and data requested is correct in cloud run docs
-  console.log("🎉 AUTOMATION FINISHED:", { done: true, pageTitle: title });
-
   return { done: true, pageTitle: title };
 }
