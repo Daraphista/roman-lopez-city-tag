@@ -11,7 +11,7 @@ app.get("/", (req, res) => {
 // Trigger automation
 app.get("/run", async (req, res) => {
    try {
-    const result = await runAutomation();
+    const result = await performAutomation();
     console.log("🎉 Automation result:", result);
     res.json({ success: true, result });
   } catch (err) {
