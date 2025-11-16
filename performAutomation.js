@@ -30,7 +30,7 @@ export async function performAutomation({ url ) {
   // You're logged into all sites instantly
   const page = await context.newPage();
   
-  await page.goto("https://example.com/");
+  await page.goto(url);
   
   await page.waitForTimeout(2000);
 
