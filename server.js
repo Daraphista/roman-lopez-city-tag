@@ -3,6 +3,8 @@ import { performAutomation } from "./performAutomation.js";
 
 const app = express();
 
+app.use(express.json());
+
 // Optional: basic health endpoint
 app.get("/", (req, res) => {
   res.send("Automation service is running.");
