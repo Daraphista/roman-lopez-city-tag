@@ -40,7 +40,7 @@ export async function performAutomation({ url }) {
   
   await page.goto(url);
 
-  const data = await page.evaluate(() => {
+  const formSubmissionNoteData = await page.evaluate(() => {
     const div = [...document.querySelectorAll('div')]
       .find(el => el.shadowRoot && el.shadowRoot.textContent.includes('A new lead has been submitted'));
     return div ? div.shadowRoot.innerHTML : null;
@@ -54,5 +54,5 @@ export async function performAutomation({ url }) {
   await browser.close();
   await client.sessions.release(session.id);
 
-  return { done: true, pageTitle: title };
+  return { done: true, pageTitle: title, formSubmissionNoteData: formSubmissionNoteData };
 }
