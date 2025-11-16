@@ -15,7 +15,7 @@ app.get("/run", async (req, res) => {
     const params = { ...req.query, ...req.body };
     console.log("🔧 Incoming parameters:", params);
 
-    const result = await performAutomation();
+    const result = await performAutomation(params);
 
     console.log("🎉 Automation result:", result);
     res.json({ success: true, result });
