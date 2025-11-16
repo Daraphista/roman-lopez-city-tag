@@ -3,7 +3,7 @@ import { preloadCookies } from "./cookiePreloader.js";
 import Steel from "steel-sdk";
 import { chromium } from "playwright";
 
-export async function performAutomation() {
+export async function performAutomation({ url ) {
   const STEEL_API_KEY = process.env.STEEL_API_KEY;
   if (!STEEL_API_KEY) throw new Error("Missing STEEL_API_KEY");
 
