@@ -8,7 +8,7 @@ app.get("/", (req, res) => {
   res.send("Automation service is running.");
 });
 
-// Trigger automation
+// GET version (for testing in browser)
 app.get("/run", async (req, res) => {
    try {
     // Combine query and body parameters so you can use either
@@ -16,8 +16,21 @@ app.get("/run", async (req, res) => {
     console.log("🔧 Incoming parameters:", params);
 
     const result = await performAutomation(params);
+     
+    res.json({ success: true, result });
+  } catch (err) {
+    console.error("Automation failed:", err);
+    res.json({ success: false, error: err.stack || err.message });
+  }
+});
+     
+// POST version (for n8n, Zapier, Make.com, etc.)
+app.post("/run", async (req, res) => {
+  try {
+    const params = req.body;   // <-- Body JSON works now
+    console.log("Incoming POST params:", params);
 
-    console.log("🎉 Automation result:", result);
+    const result = await performAutomation(params);
     res.json({ success: true, result });
   } catch (err) {
     console.error("❌ Automation failed:", err);
