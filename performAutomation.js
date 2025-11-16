@@ -29,8 +29,22 @@ export async function performAutomation({ url }) {
 
   // You're logged into all sites instantly
   const page = await context.newPage();
+
+  // Force open mode on all shadow DOMs
+  await page.addInitScript(() => {
+    const orig = Element.prototype.attachShadow;
+    Element.prototype.attachShadow = function(init) {
+      return orig.call(this, { ...init, mode: 'open' }); // force open mode
+    };
+  });
   
   await page.goto(url);
+
+  const data = await page.evaluate(() => {
+    const div = [...document.querySelectorAll('div')]
+      .find(el => el.shadowRoot && el.shadowRoot.textContent.includes('A new lead has been submitted'));
+    return div ? div.shadowRoot.innerHTML : null;
+  });
   
   await page.waitForTimeout(2000);
 
