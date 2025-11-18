@@ -44,19 +44,28 @@ export async function performAutomation({ url }) {
   const formSubmissionNoteData = await page.evaluate(() => {
     const TARGET_TEXT = "A new lead has been submitted";
   
+    function elementHasOwnText(el, text) {
+      for (const node of el.childNodes) {
+        if (node.nodeType === Node.TEXT_NODE && node.textContent.includes(text)) {
+          return true;
+        }
+      }
+      return false;
+    }
+  
     function deepSearch(node) {
       if (!node) return null;
   
-      // Check if this node itself is the NOTE container <div>
+      // Check if this is the EXACT <div> holding the note
       if (
         node.nodeType === Node.ELEMENT_NODE &&
         node.tagName === "DIV" &&
-        node.textContent.includes(TARGET_TEXT)
+        elementHasOwnText(node, TARGET_TEXT)
       ) {
-        return node.outerHTML; // return exact div
+        return node.outerHTML;
       }
   
-      // Search shadow DOM
+      // search shadow root
       if (node.shadowRoot) {
         for (const child of node.shadowRoot.children) {
           const found = deepSearch(child);
@@ -64,7 +73,7 @@ export async function performAutomation({ url }) {
         }
       }
   
-      // Search light DOM children
+      // search normal children
       for (const child of node.children) {
         const found = deepSearch(child);
         if (found) return found;
