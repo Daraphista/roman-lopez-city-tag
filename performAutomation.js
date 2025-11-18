@@ -42,16 +42,21 @@ export async function performAutomation({ url }) {
   await page.goto(url);
 
   const formSubmissionNoteData = await page.evaluate(() => {
-    // Deep search through light DOM + shadow DOM
+    const TARGET_TEXT = "A new lead has been submitted";
+  
     function deepSearch(node) {
       if (!node) return null;
   
-      // Check this node's textContent
-      if (node.textContent && node.textContent.includes('A new lead has been submitted')) {
-        return node.innerHTML || node.textContent;
+      // Check if this node itself is the NOTE container <div>
+      if (
+        node.nodeType === Node.ELEMENT_NODE &&
+        node.tagName === "DIV" &&
+        node.textContent.includes(TARGET_TEXT)
+      ) {
+        return node.outerHTML; // return exact div
       }
   
-      // Traverse shadow DOM if present
+      // Search shadow DOM
       if (node.shadowRoot) {
         for (const child of node.shadowRoot.children) {
           const found = deepSearch(child);
@@ -59,7 +64,7 @@ export async function performAutomation({ url }) {
         }
       }
   
-      // Traverse normal DOM children
+      // Search light DOM children
       for (const child of node.children) {
         const found = deepSearch(child);
         if (found) return found;
