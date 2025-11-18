@@ -30,6 +30,7 @@ export async function performAutomation({ url }) {
 
   // You're logged into all sites instantly
   const page = await context.newPage();
+  console.log(page);
 
   // Force open mode on all shadow DOMs
   await page.addInitScript(() => {
@@ -46,6 +47,7 @@ export async function performAutomation({ url }) {
       .find(el => el.shadowRoot && el.shadowRoot.textContent.includes('A new lead has been submitted'));
     return div ? div.shadowRoot.innerHTML : null;
   });
+  console.log(formSubmissionNoteData);
   
   await page.waitForTimeout(2000);
 
