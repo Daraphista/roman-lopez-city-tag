@@ -30,7 +30,6 @@ export async function performAutomation({ url }) {
 
   // You're logged into all sites instantly
   const page = await context.newPage();
-  console.log(page);
 
   // Force open mode on all shadow DOMs
   await page.addInitScript(() => {
@@ -43,9 +42,33 @@ export async function performAutomation({ url }) {
   await page.goto(url);
 
   const formSubmissionNoteData = await page.evaluate(() => {
-    const div = [...document.querySelectorAll('div')]
-      .find(el => el.shadowRoot && el.shadowRoot.textContent.includes('A new lead has been submitted'));
-    return div ? div.shadowRoot.innerHTML : null;
+    // Deep search through light DOM + shadow DOM
+    function deepSearch(node) {
+      if (!node) return null;
+  
+      // Check this node's textContent
+      if (node.textContent && node.textContent.includes('A new lead has been submitted')) {
+        return node.innerHTML || node.textContent;
+      }
+  
+      // Traverse shadow DOM if present
+      if (node.shadowRoot) {
+        for (const child of node.shadowRoot.children) {
+          const found = deepSearch(child);
+          if (found) return found;
+        }
+      }
+  
+      // Traverse normal DOM children
+      for (const child of node.children) {
+        const found = deepSearch(child);
+        if (found) return found;
+      }
+  
+      return null;
+    }
+  
+    return deepSearch(document.body);
   });
   console.log(formSubmissionNoteData);
   
